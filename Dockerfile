@@ -1,17 +1,18 @@
 # Use NodeJS base image
-FROM nginx:alpine
+FROM node:22-slim
 
-# Create app directory in Docker
+# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy nginx configuration file into the Docker image
-COPY nginx.conf /etc/nginx/nginx.conf
+# Install the app dependencies
+COPY package*.json ./
+RUN npm install
 
-# Copy app from local environment into the Docker image
+# Copy the app's source code to the container
 COPY . .
 
-# Bind the port that the image will run on: Set the API’s port number
+# Expose the port that your app will run on (Node.js server port)
 EXPOSE 8080
 
-# Define the Docker image's behavior at runtime : Define Docker’s behavior when the image is run
+# Start your app using Node.js
 CMD ["node", "server.js"]
